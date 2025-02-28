@@ -4,11 +4,14 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Initialize package.json
+RUN npm init -y
 
-# Install dependencies
-RUN npm install
+# Install necessary React dependencies
+RUN npm install react react-dom react-scripts
+
+# Add start and build scripts to package.json
+RUN sed -i 's/"scripts": {/"scripts": {"start": "react-scripts start", "build": "react-scripts build",/' package.json
 
 # Copy the rest of the application
 COPY . .
