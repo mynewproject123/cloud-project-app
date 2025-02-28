@@ -2,13 +2,6 @@
 /node_modules/
 frontend/node_modules/
 
-# Ignore package manager lock files
-package-lock.json
-frontend/package-lock.json
-
-# Ignore package.json
-package.json
-frontend/package.json
 
 # Ignore environment files
 .env
