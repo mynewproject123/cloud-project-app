@@ -15,22 +15,10 @@ WORKDIR /app/react-frontend
 
 # Install dependencies
 RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  # Install necessary dependencies
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast --save-dev  # Ensure react-hot-toast is installed
 
 # Copy all files
 COPY . .
 
 # Build the React app
 RUN npm run build
-
-# Use an Nginx image to serve the built front-end
-FROM nginx:alpine
-
-# Copy the built files from the builder stage
-COPY --from=builder /app/react-frontend/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
