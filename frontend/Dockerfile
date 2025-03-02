@@ -13,12 +13,22 @@ RUN create-vite react-frontend --template react
 # Change directory to the new project
 WORKDIR /app/react-frontend
 
-# Install dependencies
-RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast --save-dev  # ✅ Fix: Install missing package
+# Copy package.json and package-lock.json first (to cache dependencies)
+COPY package.json package-lock.json ./
 
-# Copy source code and build
+# Install dependencies (after copying package.json)
+RUN npm install
+
+# Install required dependencies explicitly
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast --save-dev  
+
+# Copy all project files
 COPY . .
+
+# Ensure postcss.config.cjs is copied
+COPY postcss.config.cjs .
+
+# Build the React app
 RUN npm run build
 
 # Production stage
