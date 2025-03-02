@@ -4,7 +4,7 @@ FROM node:18-alpine AS builder
 # Set working directory inside container
 WORKDIR /app
 
-# Install Vite globally (if package.json is missing)
+# Install Vite globally
 RUN npm install -g create-vite
 
 # Initialize a new Vite project
@@ -15,10 +15,18 @@ WORKDIR /app/react-frontend
 
 # Install dependencies
 RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  # Ensure Tailwind and PostCSS are installed
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  
 
-# Copy all files
+# Copy all project files into the container
 COPY . .
+
+# Ensure PostCSS config file is correctly copied
+COPY postcss.config.cjs .
 
 # Build the React app
 RUN npm run build
+
+# Use an Nginx image to serve the built front-end
+FROM nginx:alpine
+
+# Copy the built files f
