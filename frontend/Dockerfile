@@ -7,9 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies, including Vite
+# Install dependencies, including @vitejs/plugin-react
 RUN npm install
-RUN npm install vite --save-dev  
+RUN npm install @vitejs/plugin-react --save-dev  
 
 # Copy all project files
 COPY . .
