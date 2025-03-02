@@ -1,5 +1,5 @@
-# Use official Node.js image as base
-FROM node:18-alpine AS builder
+# Use Node 20 instead of Node 18
+FROM node:20-alpine AS builder
 
 # Set working directory inside container
 WORKDIR /app
@@ -7,9 +7,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies, including Tailwind PostCSS plugin
+# Install dependencies
 RUN npm install
-RUN npm install @tailwindcss/postcss postcss autoprefixer tailwindcss --save-dev  
 
 # Copy all project files
 COPY . .
