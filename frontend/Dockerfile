@@ -15,7 +15,7 @@ WORKDIR /app/react-frontend
 
 # Install dependencies
 RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  # ✅ Fix: Install missing package
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast --save-dev  # ✅ Fix: Install missing package
 
 # Copy source code and build
 COPY . .
