@@ -16,19 +16,12 @@ WORKDIR /app/react-frontend
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies (after copying package.json)
+# Install all dependencies, including Vite and its plugins
 RUN npm install
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast @vitejs/plugin-react --save-dev  
 
-# Install required dependencies explicitly
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast --save-dev  
-
-# Copy all project files
+# Copy source code and build
 COPY . .
-
-# Ensure postcss.config.cjs is copied
-COPY postcss.config.cjs .
-
-# Build the React app
 RUN npm run build
 
 # Production stage
