@@ -4,24 +4,20 @@ FROM node:18-alpine AS builder
 # Set working directory inside container
 WORKDIR /app
 
-# Install Vite globally
-RUN npm install -g create-vite
-
-# Initialize a new Vite project
-RUN create-vite react-frontend --template react
-
-# Change directory to the new project
-WORKDIR /app/react-frontend
-
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install all dependencies, including Zustand
+# Install dependencies
 RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast @vitejs/plugin-react zustand --save  
+RUN npm install tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  
 
-# Copy source code and build
+# Copy all project files
 COPY . .
+
+# Ensure postcss.config.cjs is copied
+COPY postcss.config.cjs .
+
+# Build the React app
 RUN npm run build
 
 # Production stage
@@ -32,7 +28,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy the built frontend from the builder stage
-COPY --from=builder /app/react-frontend/dist .
+COPY --from=builder /app/dist .
 
 # Expose port 80
 EXPOSE 80
