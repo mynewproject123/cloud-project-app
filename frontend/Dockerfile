@@ -1,32 +1,31 @@
-# Use official Node.js image as base
+# Build stage
 FROM node:18-alpine AS builder
-
-# Set working directory inside container
 WORKDIR /app
 
-# Install Vite globally
+# Install dependencies
 RUN npm install -g create-vite
-
-# Initialize a new Vite project
 RUN create-vite react-frontend --template react
-
-# Change directory to the new project
 WORKDIR /app/react-frontend
 
-# Install dependencies
+# Install necessary packages
 RUN npm install
-RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  
+RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev
 
-# Copy all project files into the container
+# Copy source code and build
 COPY . .
-
-# Ensure PostCSS config file is correctly copied
-COPY postcss.config.cjs .
-
-# Build the React app
 RUN npm run build
 
-# Use an Nginx image to serve the built front-end
+# Production stage
 FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
 
-# Copy the built files f
+# Remove default Nginx static files
+RUN rm -rf ./*
+
+# Copy the built frontend from the builder stage
+COPY --from=builder /app/react-frontend/dist .
+
+# Expose port 80
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
