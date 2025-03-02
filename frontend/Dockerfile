@@ -7,9 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install dependencies, including Vite
 RUN npm install
-RUN npm install tailwindcss autoprefixer postcss @tailwindcss/postcss --save-dev  
+RUN npm install vite --save-dev  
 
 # Copy all project files
 COPY . .
