@@ -16,7 +16,7 @@ WORKDIR /app/react-frontend
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install all dependencies, including Vite and Zustand
+# Install all dependencies, including Zustand
 RUN npm install
 RUN npm install react-router-dom tailwindcss autoprefixer postcss @tailwindcss/postcss react-hot-toast @vitejs/plugin-react zustand --save  
 
