@@ -1,18 +1,35 @@
-# Stage 1: Build the React app
-FROM node:18-alpine AS build
+# Use official Node.js image as base
+FROM node:18-alpine AS builder
+
+# Set working directory inside container
 WORKDIR /app
+
+# Install Vite globally (only if package.json is missing)
+RUN npm install -g create-vite
+
+# Initialize a new Vite project
+RUN create-vite react-frontend --template react
+
+# Change directory to the new project
+WORKDIR /app/react-frontend
+
 # Install dependencies
-COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile
-# Copy source code and build
+RUN npm install
+
+# Copy all files
 COPY . .
+
+# Build the React app
 RUN npm run build
 
-# Stage 2: Serve the app with Nginx
-FROM nginx:stable-alpine AS production
-# Copy built assets from the build stage
-COPY --from=build /app/build /usr/share/nginx/html
+# Use an Nginx image to serve the built front-end
+FROM nginx:alpine
+
+# Copy the built files from the builder stage
+COPY --from=builder /app/react-frontend/dist /usr/share/nginx/html
+
 # Expose port 80
 EXPOSE 80
-# Start Nginx
+
+# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
