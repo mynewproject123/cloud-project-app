@@ -7,15 +7,12 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies, including @vitejs/plugin-react
+# Install dependencies, including react
 RUN npm install
-RUN npm install @vitejs/plugin-react --save-dev  
+RUN npm install react react-dom --save  
 
 # Copy all project files
 COPY . .
-
-# Ensure postcss.config.cjs is copied
-COPY postcss.config.cjs .
 
 # Build the React app
 RUN npm run build
