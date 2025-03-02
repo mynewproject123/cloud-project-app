@@ -7,9 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies, including react
+# Install dependencies, including react-router-dom
 RUN npm install
-RUN npm install react react-dom --save  
+RUN npm install react-router-dom --save  
 
 # Copy all project files
 COPY . .
