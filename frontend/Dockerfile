@@ -7,9 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (to cache dependencies)
 COPY package.json package-lock.json ./
 
-# Install dependencies, including react-router-dom
+# Install dependencies, including autoprefixer
 RUN npm install
-RUN npm install react-router-dom --save  
+RUN npm install autoprefixer postcss --save-dev  
 
 # Copy all project files
 COPY . .
