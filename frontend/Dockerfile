@@ -15,7 +15,7 @@ WORKDIR /app/react-frontend
 
 # Install dependencies
 RUN npm install
-RUN npm install react-router-dom  # <--- Ensures react-router-dom is installed
+RUN npm install react-router-dom tailwindcss autoprefixer postcss --save-dev  # <--- Ensure PostCSS plugins are installed
 
 # Copy all files
 COPY . .
